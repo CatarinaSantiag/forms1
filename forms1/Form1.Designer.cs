@@ -87,6 +87,7 @@
             this.txbNome.Name = "txbNome";
             this.txbNome.Size = new System.Drawing.Size(215, 22);
             this.txbNome.TabIndex = 4;
+            this.txbNome.TextChanged += new System.EventHandler(this.txbNome_TextChanged);
             // 
             // txbPront
             // 
@@ -106,7 +107,7 @@
             this.listView1.Font = new System.Drawing.Font("Alef", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(345, 405);
+            this.listView1.Location = new System.Drawing.Point(322, 405);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(538, 185);
             this.listView1.TabIndex = 6;
@@ -118,6 +119,7 @@
             // columnHeader3
             // 
             this.columnHeader3.Text = "id";
+            this.columnHeader3.Width = 0;
             // 
             // columnHeader1
             // 
@@ -127,7 +129,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "senha";
-            this.columnHeader2.Width = 204;
+            this.columnHeader2.Width = 87;
             // 
             // button1
             // 

@@ -14,7 +14,7 @@ namespace forms1
     public partial class Form1 : Form
     {
 
-        private  string name;
+        private int id;
 
         public Form1()
         {
@@ -38,14 +38,15 @@ namespace forms1
                 while (dr.Read())
                 {
 
-                     name = (string)dr["user"];
+                     id = (int)dr["id"];
 
+                    string user = (string)dr["user"];
                     string pass = (string)dr["passwords"];
 
-                    ListViewItem lv = new ListViewItem(dr["id"].ToString());
+                    ListViewItem lv = new ListViewItem(id.ToString());
 
-
-                    lv.SubItems.Add(name);
+                    
+                    lv.SubItems.Add(user);
                      lv.SubItems.Add(pass);
                     listView1.Items.Add(lv);
 
@@ -70,9 +71,9 @@ namespace forms1
             SqlCommand sqlCommand = new SqlCommand();
 
             sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"INSERT INTO tabela_login VALUES(@user, @password)";
+            sqlCommand.CommandText = @"INSERT INTO tabela_login VALUES(@user, @passwords)";
             sqlCommand.Parameters.AddWithValue("@user", txbNome.Text );
-            sqlCommand.Parameters.AddWithValue("@password", txbPront.Text);
+            sqlCommand.Parameters.AddWithValue("@passwords", txbPront.Text);
             sqlCommand.ExecuteNonQuery();
 
             MessageBox.Show("Cadastrado com sucesso!", "1",
@@ -125,13 +126,14 @@ namespace forms1
             SqlCommand sqlCommand = new SqlCommand();
 
             sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"UPDATE tabela_login SET 
+            sqlCommand.CommandText = @"UPDATE tabela_login SET
+             [user] = @user,
+             passwords = @passwords
+             WHERE id = @id";      //UPDATE: atualizar os campos no banco de dados. SET: quais colunas vai alterar no bds
             
-            passwords = @passwords
-            WHERE user = @user";         //UPDATE: atualizar os campos no banco de dados. SET: quais colunas vai alterar no bds
-
             sqlCommand.Parameters.AddWithValue("@user", txbNome.Text);
             sqlCommand.Parameters.AddWithValue("@passwords", txbPront.Text);
+            sqlCommand.Parameters.AddWithValue("@id", id);
             sqlCommand.ExecuteNonQuery();
 
             MessageBox.Show("Cadastrado com sucesso",
@@ -150,9 +152,9 @@ namespace forms1
         {
             int index;
             index = listView1.FocusedItem.Index;
-            name = (listView1.Items[index].SubItems[0].Text);
-            txbNome.Text = listView1.Items[index].SubItems[0].Text;
-            txbPront.Text = listView1.Items[index].SubItems[1].Text;
+            id = int.Parse(listView1.Items[index].SubItems[0].Text);
+            txbNome.Text = listView1.Items[index].SubItems[1].Text;
+            txbPront.Text = listView1.Items[index].SubItems[2].Text;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -161,8 +163,8 @@ namespace forms1
             SqlCommand sqlCommand = new SqlCommand();
 
             sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"DELETE FROM tabela_login WHERE user = @user";
-            sqlCommand.Parameters.AddWithValue("@user", name );
+            sqlCommand.CommandText = @"DELETE FROM tabela_login WHERE id = @id";
+            sqlCommand.Parameters.AddWithValue("@id", id);
             try
             {
                 sqlCommand.ExecuteNonQuery();
@@ -174,8 +176,19 @@ namespace forms1
             finally
             {
                 connection.CloseConnection();
+
+                txbNome.Clear();
+                txbPront.Clear();
+
+                UpdateListView();
+
             }
-            UpdateListView();
+
+        }
+
+        private void txbNome_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }           
