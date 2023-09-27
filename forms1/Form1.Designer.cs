@@ -40,6 +40,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // butao
@@ -47,7 +48,7 @@
             this.butao.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(73)))), ((int)(((byte)(124)))));
             this.butao.Font = new System.Drawing.Font("Cambria Math", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.butao.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.butao.Location = new System.Drawing.Point(492, 308);
+            this.butao.Location = new System.Drawing.Point(492, 316);
             this.butao.Margin = new System.Windows.Forms.Padding(10, 11, 10, 11);
             this.butao.Name = "butao";
             this.butao.Size = new System.Drawing.Size(215, 83);
@@ -87,6 +88,7 @@
             this.txbNome.Name = "txbNome";
             this.txbNome.Size = new System.Drawing.Size(215, 22);
             this.txbNome.TabIndex = 4;
+            this.txbNome.TextChanged += new System.EventHandler(this.txbNome_TextChanged);
             // 
             // txbPront
             // 
@@ -96,6 +98,7 @@
             this.txbPront.PasswordChar = '♥';
             this.txbPront.Size = new System.Drawing.Size(215, 22);
             this.txbPront.TabIndex = 5;
+            this.txbPront.TextChanged += new System.EventHandler(this.txbPront_TextChanged_1);
             // 
             // listView1
             // 
@@ -106,7 +109,7 @@
             this.listView1.Font = new System.Drawing.Font("Alef", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listView1.FullRowSelect = true;
             this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(345, 405);
+            this.listView1.Location = new System.Drawing.Point(322, 405);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(538, 185);
             this.listView1.TabIndex = 6;
@@ -118,6 +121,7 @@
             // columnHeader3
             // 
             this.columnHeader3.Text = "id";
+            this.columnHeader3.Width = 0;
             // 
             // columnHeader1
             // 
@@ -127,12 +131,12 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "senha";
-            this.columnHeader2.Width = 204;
+            this.columnHeader2.Width = 87;
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(720, 308);
+            this.button1.Location = new System.Drawing.Point(720, 316);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(182, 83);
             this.button1.TabIndex = 7;
@@ -143,13 +147,22 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Cambria", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(297, 308);
+            this.button2.Location = new System.Drawing.Point(297, 316);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(182, 83);
             this.button2.TabIndex = 8;
             this.button2.Text = "excluir";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(570, 69);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(0, 49);
+            this.label1.TabIndex = 9;
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // Form1
             // 
@@ -158,6 +171,7 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1223, 622);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.listView1);
@@ -190,6 +204,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
