@@ -8,7 +8,7 @@ namespace forms1
 
 {
 
-    public class Usuario
+   internal class Usuario
     {
         private int _id;
         private string _user;

@@ -11,6 +11,39 @@ namespace forms1
 {
     internal class UserDAO
     {
+
+        public bool LoginUser(string txbNome, string txbPront)  
+       {
+            Conexao1 connection = new Conexao1();
+            SqlCommand sqlCommand = new SqlCommand();
+
+            sqlCommand.Connection = connection.ReturnConnection();
+            sqlCommand.CommandText = "SELECT*FROM tabela_login WHERE + user= @user AND passwords=@passwords";   
+            sqlCommand.Parameters.AddWithValue("@user", txbNome);
+            sqlCommand.Parameters.AddWithValue("@passwords", txbPront);
+
+            try
+            {
+               SqlDataReader dr=sqlCommand.ExecuteReader();
+                if (dr.HasRows)
+                {
+                    dr.Close();
+                        return true;
+
+                }
+                dr.Close();
+            }
+            catch (Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+            finally
+            {
+                connection.CloseConnection();
+            }
+
+
+        }
         public void InsertUser(string txbNome, string txbPront)
            
         {
