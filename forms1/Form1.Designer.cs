@@ -178,7 +178,7 @@
             this.button3.Text = "Voltar";
             this.button3.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            //this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // txbConfirma
             // 
@@ -188,7 +188,7 @@
             this.txbConfirma.PasswordChar = '♥';
             this.txbConfirma.Size = new System.Drawing.Size(215, 22);
             this.txbConfirma.TabIndex = 11;
-            this.txbConfirma.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            //this.txbConfirma.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label2
             // 

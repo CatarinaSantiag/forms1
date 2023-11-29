@@ -60,7 +60,7 @@ namespace forms1
 
             UserDAO usuario = new UserDAO();
 
-            if (usuario.LoginUser(txbNome, txbPront))
+            if (usuario.LoginUser(email, senha))
             {
                 Form3 form= new Form3();
                 form.ShowDialog();
