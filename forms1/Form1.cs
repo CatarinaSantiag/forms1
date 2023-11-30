@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -49,6 +50,26 @@ namespace forms1
             }
            
         }
+        private string CalcularSHA256(string input)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                // Converte a string de entrada em bytes
+                byte[] bytes = Encoding.UTF8.GetBytes(input);
+
+                // Calcula o hash SHA-256
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+
+                // Converte o resultado do hash em uma string hexadecimal
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    builder.Append(hashBytes[i].ToString("x2"));
+                }
+
+                return builder.ToString();
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
 
@@ -57,9 +78,9 @@ namespace forms1
 
             try
             {
-                Usuario user = new Usuario( txbPront.Text, txbNome.Text );
+                Usuario user = new Usuario(CalcularSHA256(txbPront.Text), txbNome.Text );
                 UserDAO nomeDoOB = new UserDAO();
-                nomeDoOB.InsertUser(txbNome.Text, txbPront.Text);
+                nomeDoOB.InsertUser(txbNome.Text, CalcularSHA256(txbPront.Text));
                 MessageBox.Show("Cadastrado com sucesso!", "1",
 
               MessageBoxButtons.OK,
@@ -153,6 +174,11 @@ namespace forms1
         }
 
         private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txbConfirma_TextChanged(object sender, EventArgs e)
         {
 
         }

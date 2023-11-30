@@ -13,10 +13,10 @@ using System.Windows.Forms;
 
 namespace forms1
 {
-    
+
     public partial class Form4 : Form
     {
-        private readonly string DataBase = "CursosNoah";
+
         public Form4()
         {
             InitializeComponent();
@@ -53,26 +53,29 @@ namespace forms1
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            
 
-            string email =textBox1.Text;
-            string senha = CalcularSHA256(textBox2.Text);
+            string User = textBox1.Text;
+            string Passwords = CalcularSHA256(textBox2.Text);
 
             UserDAO usuario = new UserDAO();
 
-            if (usuario.LoginUser(email, senha))
+            if (usuario.LoginUser(User, Passwords))
             {
-                Form3 form= new Form3();
+                Form3 form = new Form3();
                 form.ShowDialog();
-                
+
             }
             else
             {
-                MessageBox.Show("hgjdgasdha", "asas", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("preencha os campos corretamente", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-          
+
         }
-       
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

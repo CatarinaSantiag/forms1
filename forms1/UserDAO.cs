@@ -12,15 +12,15 @@ namespace forms1
     internal class UserDAO
     {
 
-        public bool LoginUser(string txbNome, string txbPront)  
+        public bool LoginUser(string User, string Passwords)  
        {
             Conexao1 connection = new Conexao1();
             SqlCommand sqlCommand = new SqlCommand();
 
             sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = "SELECT*FROM tabela_login WHERE + user= @user AND passwords=@passwords";   
-            sqlCommand.Parameters.AddWithValue("@user", txbNome);
-            sqlCommand.Parameters.AddWithValue("@passwords", txbPront);
+            sqlCommand.CommandText = "SELECT * FROM tabela_login WHERE + user = @user AND passwords = @passwords";   
+            sqlCommand.Parameters.AddWithValue("@user", User);
+            sqlCommand.Parameters.AddWithValue("@passwords", Passwords);
 
             try
             {
@@ -132,20 +132,19 @@ namespace forms1
                 //Enquanto for possível continuar a leitura das linhas que foram retornadas na consulta, execute.
                 while (dr.Read())
                 {
-
-                   int id = (int)dr["id"];
-
-                    string user = (string)dr["user"];
-                    string pass = (string)dr["passwords"];
-                    Usuario usuario= new Usuario(id, user, pass);
-                    users.Add(usuario); 
+                    Usuario obj = new Usuario(
+                   (int)dr["id"],
+                    (string)dr["user"],
+                    (string)dr["passwords"]
+                   );
+                    users.Add(obj); 
 
                 }
                 dr.Close();
             }
             catch (Exception err)
             {
-                throw new Exception("Erro na Leitura de Dados.\n"+ err.Message);
+               MessageBox.Show(err.Message);
             }
             finally
             {
