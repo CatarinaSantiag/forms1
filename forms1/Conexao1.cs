@@ -9,9 +9,6 @@ using System.Threading.Tasks;
 namespace forms1
 {
     internal class Conexao1
-   
-
-
     {
         //Propriedades ou atributos
         private readonly SqlConnection con;

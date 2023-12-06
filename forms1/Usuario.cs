@@ -13,16 +13,9 @@ namespace forms1
         private int _id;
         private string _user;
         private string _passwords;
-
         public Usuario
-            (string user,
-            string passwords)
-        {
-            User = user;
-            Passwords = passwords;
-        }
-        public Usuario
-            (int id, string user,
+            (int id, 
+            string user,
             string passwords)
         {
             Id = id;
@@ -33,8 +26,6 @@ namespace forms1
         {
             set
             {
-
-
                 _id = value;
             } //atribuicao de valor
 
@@ -57,19 +48,12 @@ namespace forms1
         {
             set
             {
-               
-
                 if (string.IsNullOrEmpty(value))
                     throw new Exception("Preencha corretamente o campo SENHA");
 
                 _passwords = value;
-
-              
             }
-
-
             get { return _passwords; }
         }
-
     }
 }

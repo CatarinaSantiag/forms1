@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,69 +13,34 @@ namespace forms1
     internal class UserDAO
     {
 
-        public bool LoginUser(string User, string Passwords)  
-       {
-            Conexao1 connection = new Conexao1();
-            SqlCommand sqlCommand = new SqlCommand();
 
-            sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = "SELECT * FROM tabela_login WHERE + user = @user AND passwords = @passwords";   
-            sqlCommand.Parameters.AddWithValue("@user", User);
-            sqlCommand.Parameters.AddWithValue("@passwords", Passwords);
-
-            try
-            {
-               SqlDataReader dr=sqlCommand.ExecuteReader();
-                if (dr.HasRows)
-                {
-                    dr.Close();
-                        return true;
-
-                }
-                dr.Close();
-            }
-            catch (Exception err)
-            {
-                MessageBox.Show(err.Message);
-            }
-            finally
-            {
-                connection.CloseConnection();
-            }
-
-            return false;
-        }
-        public void InsertUser(string txbNome, string txbPront)
-           
+        public void InsertUser(Usuario usuario)
         {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(usuario.Passwords));
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+                string sha256string = sb.ToString();
 
-            Conexao1 connection = new Conexao1();
-            SqlCommand sqlCommand = new SqlCommand();
+                Conexao1 connection = new Conexao1();
+                SqlCommand sqlCommand = new SqlCommand();
 
-            sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"INSERT INTO tabela_login VALUES(@user, @passwords)";
-            sqlCommand.Parameters.AddWithValue("@user", txbNome);
-            sqlCommand.Parameters.AddWithValue("@passwords", txbPront);
-            sqlCommand.ExecuteNonQuery();
-
-           
-
-
-            string pront = txbPront;
-            string nome = txbNome;
-            string message = "E-mail/Usuário " + nome + "\nSenha/Matrícula: " + pront;
-
-            MessageBox.Show(message, "DADOS",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                sqlCommand.Connection = connection.ReturnConnection();
+                sqlCommand.CommandText = @"INSERT INTO tabela_login VALUES(@user, @passwords)";
+                sqlCommand.Parameters.AddWithValue("@user", usuario.User);
+                sqlCommand.Parameters.AddWithValue("@passwords", sha256string);
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
-    
-      
+
+
         public void DeleteUser(int id)
         {
-
-
             Conexao1 connection = new Conexao1();
             SqlCommand sqlCommand = new SqlCommand();
 
@@ -92,28 +58,38 @@ namespace forms1
             finally
             {
                 connection.CloseConnection();
-                
+
 
             }
         }
 
-        public void EditUser(string txbNome, string txbPront, int id)
-        {    
-            
+        public void EditUser(int id, Usuario usuario)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(usuario.Passwords));
+                StringBuilder sb = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    sb.Append(b.ToString("x2"));
+                }
+                string sha256string = sb.ToString();
 
-            Conexao1 connection = new Conexao1();
-            SqlCommand sqlCommand = new SqlCommand();
+                Conexao1 connection = new Conexao1();
+                SqlCommand sqlCommand = new SqlCommand();
+                sqlCommand.Connection = connection.ReturnConnection();
+                sqlCommand.CommandText = @"UPDATE tabela_login SET
+                [user] = @user,
+                passwords = @passwords
+                WHERE id = @id";      
+                
+                //UPDATE: atualizar os campos no banco de dados. SET: quais colunas vai alterar no bds
 
-            sqlCommand.Connection = connection.ReturnConnection();
-            sqlCommand.CommandText = @"UPDATE tabela_login SET
-             [user] = @user,
-             passwords = @passwords
-             WHERE id = @id";      //UPDATE: atualizar os campos no banco de dados. SET: quais colunas vai alterar no bds
-
-            sqlCommand.Parameters.AddWithValue("@user", txbNome);
-            sqlCommand.Parameters.AddWithValue("@passwords", txbPront);
-            sqlCommand.Parameters.AddWithValue("@id", id);
-            sqlCommand.ExecuteNonQuery();
+                sqlCommand.Parameters.AddWithValue("@user", usuario.User) ;
+                sqlCommand.Parameters.AddWithValue("@passwords", sha256string);
+                sqlCommand.Parameters.AddWithValue("@id", id);
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
         public List<Usuario> SelectUser()
@@ -137,14 +113,14 @@ namespace forms1
                     (string)dr["user"],
                     (string)dr["passwords"]
                    );
-                    users.Add(obj); 
+                    users.Add(obj);
 
                 }
                 dr.Close();
             }
             catch (Exception err)
             {
-               MessageBox.Show(err.Message);
+                MessageBox.Show(err.Message);
             }
             finally
             {

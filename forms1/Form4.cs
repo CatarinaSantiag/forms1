@@ -31,50 +31,96 @@ namespace forms1
         {
 
         }
-        private string CalcularSHA256(string input)
-        {
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                // Converte a string de entrada em bytes
-                byte[] bytes = Encoding.UTF8.GetBytes(input);
-
-                // Calcula o hash SHA-256
-                byte[] hashBytes = sha256.ComputeHash(bytes);
-
-                // Converte o resultado do hash em uma string hexadecimal
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < hashBytes.Length; i++)
-                {
-                    builder.Append(hashBytes[i].ToString("x2"));
-                }
-
-                return builder.ToString();
-            }
-        }
         private void button1_Click(object sender, EventArgs e)
         {
-
-            string User = textBox1.Text;
-            string Passwords = CalcularSHA256(textBox2.Text);
-
-            UserDAO usuario = new UserDAO();
-
-            if (usuario.LoginUser(User, Passwords))
-            {
-                Form3 form = new Form3();
-                form.ShowDialog();
-
-            }
-            else
-            {
-                MessageBox.Show("preencha os campos corretamente", "AVISO", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
 
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+
+            this.Close();
+        }
+
+        private void Form4_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Conexao1 connection = new Conexao1();
+            SqlCommand sqlCommand = new SqlCommand();
+
+            sqlCommand.Connection = connection.ReturnConnection();
+            sqlCommand.CommandText = "SELECT * FROM tabela_login WHERE [user] = @user";
+            sqlCommand.Parameters.AddWithValue("@user", loginuser.Text);
+
+            if (string.IsNullOrEmpty(loginuser.Text))
+            {
+                MessageBox.Show(
+                "O nome de usuário está vazio!",
+                "ATENÇÃO!",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+                loginuser.Clear();
+            }
+
+            using (SqlDataReader reader = sqlCommand.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string senhasgbd = (string)reader["passwords"];
+
+                    string senhalogin = loginsenha.Text;
+                    using (SHA256 sha256 = SHA256.Create())
+                    {
+                        byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(senhalogin));
+                        StringBuilder sb = new StringBuilder();
+                        foreach (byte b in bytes)
+                        {
+                            sb.Append(b.ToString("x2"));
+                        }
+                        string sha256login = sb.ToString();
+
+                        if (senhasgbd == sha256login)
+                        {
+                            MessageBox.Show(
+                            "Bem vindo!",
+                            "ATENÇÃO",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                            loginuser.Clear();
+                            loginsenha.Clear();
+
+                            Form3 login = new Form3();
+                            login.ShowDialog();
+                        }
+
+                        else
+                        {
+                            MessageBox.Show(
+                            "A senha está incorreta!",
+                            "ATENÇÃO!",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                            loginsenha.Clear();
+                        }
+                    }
+                }
+
+            }
 
         }
     }
